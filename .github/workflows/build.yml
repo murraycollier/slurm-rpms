@@ -9,7 +9,7 @@ jobs:
 
     - name: build RPM package
       id: rpm
-      uses: naveenrajm7/rpmbuild@master
+      uses: murraycollier/rpmbuild@master
       with:
         spec_file: "slurm.spec"
     - name: Upload artifact
