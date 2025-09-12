@@ -1,3 +1,0 @@
-var/lib/slurm/slurmctld
-var/log/slurm
-etc/slurm

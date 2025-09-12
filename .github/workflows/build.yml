@@ -1,21 +1,40 @@
-name: RPM Build
-on: push
+# This is a basic workflow to help you get started with Actions
 
+name: Build Slurm RPM's
+
+# Controls when the action will run. Triggers the workflow on push or pull request 
+# events but only for the master branch
+on:
+  push:
+    branches: ['main']
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v5
 
-    - name: build RPM package
-      id: rpm
-      uses: naveenrajm7/rpmbuild@master
+    # Runs commands using the runners shell
+    - name: apt update
+      run: apt update
+    - name: Install build essentials
+      run: apt install build-essential
+    - name: rpmbuild  
+      run: rpmbuild -ta slurm-25.05.3.tar.bz2 
+p   - name: Commit files  # transfer the new html files back into the repository
+      run: |
+        git config --local user.name  ${{ github.actor }}        
+      git config --local user.email "${{ github.actor }}@users.noreply.github.com":wq
+        git add *.rpm
+        git commit -m "Updating the repository GitHub html pages in the docs folder"
+    - name: Push changes  # push the output folder to your repo
+      uses: ad-m/github-push-action@master
       with:
-        spec_file: "slurm.spec"
-        additional_repos: "['centos-release-scl', 'http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm']"
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Binary RPM
-        path: ${{ steps.rpm.outputs.rpm_dir_path }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
