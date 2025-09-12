@@ -1,32 +1,19 @@
-name: Build Slurm RPMs
-on:
-  push:
-    branches: ['main']
+name: RPM Build
+on: push
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v5
 
-    # Runs commands using the runners shell
-    - name: apt update
-      run: sudo apt update
-    - name: Install build essentials
-      run: sudo apt install build-essential
-    - name: rpmbuild  
-      run: sudo rpmbuild -ta slurm-25.05.3.tar.bz2 
-    - name: Commit files  # transfer the new html files back into the repository
-      run: |
-        git config --local user.name  ${{ github.actor }}        
-        git config --local user.email "${{ github.actor }}@users.noreply.github.com"
-        git add *.rpm
-        git commit -m "Updating the repository GitHub html pages in the docs folder"
-    - name: Push changes  # push the output folder to your repo
-      uses: ad-m/github-push-action@master
+    - name: build RPM package
+      id: rpm
+      uses: naveenrajm7/rpmbuild@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
+        spec_file: "cello.spec"
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Binary RPM
+        path: ${{ steps.rpm.outputs.rpm_dir_path }}
