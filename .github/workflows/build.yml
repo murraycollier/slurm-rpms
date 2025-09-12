@@ -19,7 +19,7 @@ jobs:
       run: apt install build-essential
     - name: rpmbuild  
       run: rpmbuild -ta slurm-25.05.3.tar.bz2 
-p   - name: Commit files  # transfer the new html files back into the repository
+    - name: Commit files  # transfer the new html files back into the repository
       run: |
         git config --local user.name  ${{ github.actor }}        
       git config --local user.email "${{ github.actor }}@users.noreply.github.com":wq
