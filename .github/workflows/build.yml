@@ -14,11 +14,11 @@ jobs:
 
     # Runs commands using the runners shell
     - name: apt update
-      run: apt update
+      run: sudo apt update
     - name: Install build essentials
-      run: apt install build-essential
+      run: sudo apt install build-essential
     - name: rpmbuild  
-      run: rpmbuild -ta slurm-25.05.3.tar.bz2 
+      run: sudo rpmbuild -ta slurm-25.05.3.tar.bz2 
     - name: Commit files  # transfer the new html files back into the repository
       run: |
         git config --local user.name  ${{ github.actor }}        
