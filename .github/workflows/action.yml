@@ -1,0 +1,7 @@
+name: "Build slurm packages"
+
+description: "Build Slurm Packages"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"

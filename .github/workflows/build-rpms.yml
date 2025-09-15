@@ -1,0 +1,19 @@
+jobs:
+  build-rpms:
+    runs-on: ubuntu-latest
+    name: Build slurm rpms
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Build the slurm rpms
+        id: build-rpms
+        uses: ./actions # wherever that action.yml file is in your repo
+
+      - name: Upload the RPMs as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: slurm-rpms
+          path: |
+            /home/runner/work/_temp/_github_home/rpmbuild/RPMS/x86_64/
+            !/home/runner/work/_temp/_github_home/rpmbuild/RPMS/x86_64/*debug*.rpm
