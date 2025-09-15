@@ -1,3 +1,7 @@
+name: Build Slurm RPMs
+on:
+  push:
+    branches: ['main']
 jobs:
   build-rpms:
     runs-on: ubuntu-latest
