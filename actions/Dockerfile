@@ -1,4 +1,4 @@
-FROM fedora:41
+FROM redhat/ubi9:latest-source
 
 # Add RPM Fusion
 RUN dnf install -y \
